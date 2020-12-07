@@ -8,7 +8,7 @@ class Ishape {
 public:
     Ishape() {
     }
-    virtual void show_parametri() {
+    virtual void show() {
         cout << " Абстрактная фигура " << endl;
     }
     ~Ishape() {
@@ -46,12 +46,22 @@ public:
     Ishape& GetObject(int index) {
         return *objects[index];
     }
+
+    int GetSize() {
+        return size;
+    }
 };
 
 
 int main() {
         setlocale(LC_ALL, "Rus");
         MyStorage storage(10);
+        // добавляем в него объекты
+        for (int i = 0; i < storage.GetSize(); i++)
+            storage.SetObject(i, new Ishape());
+        // обращаемся поочередно ко всем
+        for (int i = 0; i < storage.GetSize(); i++)
+            storage.GetObject(i).show();
 
 
 
