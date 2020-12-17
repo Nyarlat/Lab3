@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <stdio.h>
 #include <conio.h>
-
+#include <ctime>
 using namespace std;
 
 class Object {
@@ -12,10 +12,6 @@ public:
 
     ~Object() {
         cout << "~Object" << endl;
-    }
-
-    virtual void getSubject() {
-        cout << "getSubject()" << endl;
     }
 };
 
@@ -31,10 +27,6 @@ public:
     ~Subject1() {
         cout << "~Subject1()" << endl;
     }
-
-    void getSubject() {
-        cout << "x=" << x << endl;
-    }
 };
 
 class  Subject2 : public Object {
@@ -49,18 +41,14 @@ public:
     ~Subject2() {
         cout << "~Subject2()" << endl;
     }
-
-    void getSubject() {
-        cout << "y=" << y << endl;
-    }
 };
 
 class MyStorage {
 private:
     Object** objects;
     int size;
-    int amount;
 public:
+    int amount;
     MyStorage(int size) {
         amount = 0;
         this->size = size;
@@ -76,7 +64,7 @@ public:
     }
 
     void addObject(Object* NewObject, int index) {
-        if ((index > -1) && (index < size)) {
+        if (index < size) {
             cout << "add" << endl;
             objects[index] = NewObject;
             amount++;
@@ -96,7 +84,7 @@ public:
     }
 
     Object* getSubject(int index) {
-        if ((index > -1) && (index < size)) {
+        if (index < size) {
             return objects[index];
         }
         else {
@@ -104,70 +92,48 @@ public:
             return NULL;
         }
     }
-
-    void resize(int Resize) {
-        cout << "resize" << endl;
-        int n1;
-        int n2;
-        Object** reObjects = new Object *[size];
-        if (Resize > size) {
-            n1 = size;
-            n2 = Resize;
-        }
-        else {
-            n1 = Resize;
-            n2 = size;
-        }
-        for (int i = 0; i < n1; i++) {
-            reObjects[i] = objects[i];
-        }
-        for (int i = 0; i < n2; i++) {
-            objects[n2] = NULL;
-        }
-        delete[] objects;
-        objects = reObjects;
-    }
 };
 
 
 int main() {
     setlocale(LC_ALL, "Rus");
-    MyStorage storage(10);
+    unsigned int starttime = clock();
+    MyStorage storage(10000);
 
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 10000; i++) {
         int random = rand() % 2;
         Object* obj;
         if (random == 1) {
             Subject1* sub1 = new Subject1();
             obj = sub1;
+            storage.addObject(obj, i);
         }
         else {
             Subject2* sub2 = new Subject2();
             obj = sub2;
+            storage.addObject(obj, i);
         }
 
         int randActions = rand() % 3;
         if (randActions == 1) {
-            storage.addObject(obj, i);
+            if (storage.getSubject(i) != NULL) {
+                storage.getSubject(i);
+            }
+            else {
+                cout << "NULL" << endl;
+            }
         }
         else if (randActions == 2) {
             storage.delObject(i);
         }
         else {
-            //int NewSize = 100;
-            int NewSize = rand() % 100;
-            storage.resize(NewSize);
+            cout << storage.amount << endl;
         }
 
-        if (storage.getSubject(i) != NULL) {
-            storage.getSubject(i);
-        }
-        else {
-            cout << "NULL" << endl;
-        }
     }
-
-    system("pause");
+    unsigned int stop = clock();
+    unsigned int rezulttime = stop - starttime;
+    cout << "Заняло времени: " << rezulttime << endl;
     return 0;
 
 }
