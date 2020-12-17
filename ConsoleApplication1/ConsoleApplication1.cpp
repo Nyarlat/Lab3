@@ -15,6 +15,7 @@ public:
     }
 
     virtual void getSubject() {
+        cout << "getSubject()" << endl;
     }
 };
 
@@ -24,7 +25,7 @@ protected:
 public: 
     Subject1(): Object() {
         cout << "Subject1()" << endl;
-        x = rand();
+        x = rand() %100;
     }
     
     ~Subject1() {
@@ -42,7 +43,7 @@ protected:
 public:
     Subject2(): Object() {
         cout << "Subject2()" << endl;
-        y = rand();
+        y = rand() %100;
     }
 
     ~Subject2() {
@@ -76,6 +77,7 @@ public:
 
     void addObject(Object* NewObject, int index) {
         if ((index > -1) && (index < size)) {
+            cout << "add" << endl;
             objects[index] = NewObject;
             amount++;
         }
@@ -103,48 +105,58 @@ public:
         }
     }
 
-    int GetSize() {
-        return size;
+    void resize(int Resize) {
+        cout << "resize" << endl;
+        int n1;
+        int n2;
+        Object** reObjects = new Object *[size];
+        if (Resize > size) {
+            n1 = size;
+            n2 = Resize;
+        }
+        else {
+            n1 = Resize;
+            n2 = size;
+        }
+        for (int i = 0; i < n1; i++) {
+            reObjects[i] = objects[i];
+        }
+        for (int i = 0; i < n2; i++) {
+            objects[n2] = NULL;
+        }
+        delete[] objects;
+        objects = reObjects;
     }
 };
 
 
 int main() {
-        setlocale(LC_ALL, "Rus");
-        MyStorage storage(10);
-        // добавляем в него объекты
-        for (int i = 0; i < 10; i++) {
-            int random = rand() % 2;
-            Object* obj;
-            if (random == 1) {
-                Subject1* sub1 = new Subject1();
-                obj = sub1;
-            }
-            else {
-                Subject2* sub2 = new Subject2();
-                obj = sub2;
-            }
-            if (storage.getSubject(i) != NULL) {
-                storage.getSubject(i);
-            }
-            else {
-                cout << "NULL" << endl;
-            }
-            storage.addObject(obj, i);
-            storage.delObject(i);
-            if (storage.getSubject(i) != NULL) {
-                storage.getSubject(i);
-            }
-            else {
-                cout << "NULL" << endl;
-            }
-        }
-        //for (int i = 0; i < storage.GetSize(); i++)
-            //storage.show_value(i);
-        //for (int i = 0; i < storage.GetSize(); i++)
-            //storage.delObject(i);
+    setlocale(LC_ALL, "Rus");
+    MyStorage storage(10);
 
-        
+    for (int i = 0; i < 10; i++) {
+        int random = rand() % 2;
+        Object* obj;
+        if (random == 1) {
+            Subject1* sub1 = new Subject1();
+            obj = sub1;
+        }
+        else {
+            Subject2* sub2 = new Subject2();
+            obj = sub2;
+        }
+
+        storage.resize(30);
+        //storage.addObject(obj, i);
+        //storage.delObject(i);
+
+        if (storage.getSubject(i) != NULL) {
+            storage.getSubject(i);
+        }
+        else {
+            cout << "NULL" << endl;
+        }
+    }
 
         system("pause");
         return 0;
