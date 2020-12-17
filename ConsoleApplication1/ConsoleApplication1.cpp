@@ -22,7 +22,7 @@ class  Subject1 : public Object {
 protected: 
     int x;
 public: 
-    Subject1() {
+    Subject1(): Object() {
         cout << "Subject1()" << endl;
         x = rand();
     }
@@ -40,7 +40,7 @@ class  Subject2 : public Object {
 protected:
     int y;
 public:
-    Subject2() {
+    Subject2(): Object() {
         cout << "Subject2()" << endl;
         y = rand();
     }
@@ -58,10 +58,16 @@ class MyStorage {
 private:
     Object** objects;
     int size;
+    int amount;
 public:
     MyStorage(int size) {
+        amount = 0;
         this->size = size;
         objects = new Object* [size];
+        cout << "MyStorage()" << endl;
+        for (int i = 0; i < this->size; i++) {
+            objects[i] = NULL;
+        }
     }
 
     ~MyStorage() {
@@ -80,13 +86,23 @@ public:
     }*/
     
     void delObject(int index) {
-        objects[index] = NULL;
-        size = size - 1;
+        if (objects[index] != NULL) {
+            objects[index] = NULL;
+            amount--;
+            cout << "dell" << endl;
+        }
+        else
+            cout << "Error del" << endl;
     }
 
-    Object& GetObject(int index) {
-        while (objects[index] != nullptr)
-            return *objects[index];
+    Object* show_value(int index) {
+        if (index > -1) {
+            return objects[index];
+        }
+        else {
+            cout << "error" << endl;
+            return NULL;
+        }
     }
 
     int GetSize() {
@@ -110,9 +126,12 @@ int main() {
                 Subject2* sub2 = new Subject2();
                 obj = sub2;
             }
+            storage.delObject(i);
         }
         for (int i = 0; i < storage.GetSize(); i++)
-            storage.GetObject(i);
+            storage.show_value(i);
+        //for (int i = 0; i < storage.GetSize(); i++)
+            //storage.delObject(i);
 
         
 
