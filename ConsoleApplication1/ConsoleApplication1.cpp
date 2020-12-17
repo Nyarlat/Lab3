@@ -134,7 +134,7 @@ int main() {
     setlocale(LC_ALL, "Rus");
     MyStorage storage(10);
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1000; i++) {
         int random = rand() % 2;
         Object* obj;
         if (random == 1) {
@@ -146,9 +146,18 @@ int main() {
             obj = sub2;
         }
 
-        storage.resize(30);
-        //storage.addObject(obj, i);
-        //storage.delObject(i);
+        int randActions = rand() % 3;
+        if (randActions == 1) {
+            storage.addObject(obj, i);
+        }
+        else if (randActions == 2) {
+            storage.delObject(i);
+        }
+        else {
+            //int NewSize = 100;
+            int NewSize = rand() % 100;
+            storage.resize(NewSize);
+        }
 
         if (storage.getSubject(i) != NULL) {
             storage.getSubject(i);
@@ -158,7 +167,7 @@ int main() {
         }
     }
 
-        system("pause");
-        return 0;
+    system("pause");
+    return 0;
 
 }
