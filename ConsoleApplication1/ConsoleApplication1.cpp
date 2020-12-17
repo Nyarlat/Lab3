@@ -14,7 +14,7 @@ public:
         cout << "~Object" << endl;
     }
 
-    virtual void show_value() {
+    virtual void getSubject() {
     }
 };
 
@@ -31,7 +31,7 @@ public:
         cout << "~Subject1()" << endl;
     }
 
-    void show_value() {
+    void getSubject() {
         cout << "x=" << x << endl;
     }
 };
@@ -49,7 +49,7 @@ public:
         cout << "~Subject2()" << endl;
     }
 
-    void show_value() {
+    void getSubject() {
         cout << "y=" << y << endl;
     }
 };
@@ -74,16 +74,14 @@ public:
         delete[] objects;
     }
 
-    void SetObject(int index, Object* object) {
-        objects[index] = object;
-    }
-    /*void addObject(int amount, Object* object) {
-        for (int i = 1; i < amount; ++i) {
-            *objects = (Object*)realloc(*objects, sizeof(Object) * i);
-            //*objects[size+i] = new Ishape*;
+    void addObject(Object* NewObject, int index) {
+        if ((index > -1) && (index < size)) {
+            objects[index] = NewObject;
+            amount++;
         }
-        //size = size + amount;
-    }*/
+        else 
+            cout << "Error: add" << endl;
+    }
     
     void delObject(int index) {
         if (objects[index] != NULL) {
@@ -92,11 +90,11 @@ public:
             cout << "dell" << endl;
         }
         else
-            cout << "Error del" << endl;
+            cout << "Error: del" << endl;
     }
 
-    Object* show_value(int index) {
-        if (index > -1) {
+    Object* getSubject(int index) {
+        if ((index > -1) && (index < size)) {
             return objects[index];
         }
         else {
@@ -126,10 +124,23 @@ int main() {
                 Subject2* sub2 = new Subject2();
                 obj = sub2;
             }
+            if (storage.getSubject(i) != NULL) {
+                storage.getSubject(i);
+            }
+            else {
+                cout << "NULL" << endl;
+            }
+            storage.addObject(obj, i);
             storage.delObject(i);
+            if (storage.getSubject(i) != NULL) {
+                storage.getSubject(i);
+            }
+            else {
+                cout << "NULL" << endl;
+            }
         }
-        for (int i = 0; i < storage.GetSize(); i++)
-            storage.show_value(i);
+        //for (int i = 0; i < storage.GetSize(); i++)
+            //storage.show_value(i);
         //for (int i = 0; i < storage.GetSize(); i++)
             //storage.delObject(i);
 
